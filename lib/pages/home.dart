@@ -81,19 +81,19 @@ bool red_textfield =   false;
     );
   }
 
-  void savedata(String _user,String _char_img_path_string)async{
+  void savedata(String user,String char_img_path_string)async{
     SharedPreferences pref = await SharedPreferences.getInstance();
-    await pref.setString("username", _user);
-    await pref.setString("char_path", _char_img_path_string);
+    await pref.setString("username", user);
+    await pref.setString("char_path", char_img_path_string);
     print(pref.getString("username"));
 
   }
 
 
   bool validate_user(){
-    String _uname=_usernameController.text;
+    String uname=_usernameController.text;
 
-    if(_uname.isEmpty || _uname.length < 4){
+    if(uname.isEmpty || uname.length < 4){
       setState(() {
         red_textfield=true;
       });
@@ -101,7 +101,7 @@ bool red_textfield =   false;
       return false;
 
     }
-    savedata(_uname,_Char_img_path);
+    savedata(uname,_Char_img_path);
     setState(() {
       red_textfield=false;
     });
@@ -227,7 +227,7 @@ void ShowCharacterDialog(BuildContext context){
         ),
         titlePadding: EdgeInsets.only(top: 50),
         contentPadding: EdgeInsets.all(40),
-        content: Container(
+        content: SizedBox(
           width: double.maxFinite,
           height: 500,
           child: GridView.count(crossAxisCount: 2,

@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   Future<bool> char_not_found()async{
     SharedPreferences pref =await SharedPreferences.getInstance();
-    print("username = ${pref.getString("username")}");
+    // print("username = ${pref.getString("username")}");
    return pref.getString("username")==null;  
   }
 

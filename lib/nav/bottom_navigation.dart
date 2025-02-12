@@ -27,7 +27,7 @@ class CustomBottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List li = chooseState(this.sta);
+    List li = chooseState(sta);
     return Padding(
       padding: const EdgeInsets.only(bottom: 40,left: 25,right: 25,top: 15),
       child: Container(
