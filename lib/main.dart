@@ -1,8 +1,8 @@
 // import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:transfer_files/pages/home.dart';
-import 'package:transfer_files/pages/secondpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:transfer_files/nav/bottom_navigation.dart';
 
 void main(){
   runApp(const MyApp());
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           else {
             bool isNotFound = snapshot.data ?? true;
             if (! isNotFound) {
-              return const Secondpage();
+              return const CustomBottomNavigation();
             } else {
               return const HomePage(); // Replace with your Home page
             }

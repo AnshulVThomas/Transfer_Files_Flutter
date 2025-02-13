@@ -1,11 +1,9 @@
-// import 'package:flutter/material.dart';
 
 class CharImg {
   String iconpath;
 
 
 CharImg({required this.iconpath});
-
 static List<CharImg> getChar(){
   List<CharImg> Character=[];
 

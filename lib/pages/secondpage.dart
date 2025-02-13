@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:transfer_files/nav/bottom_navigation.dart';
 import 'package:transfer_files/camera_and_qr_code/qrCodeScanner.dart';
 // import 'package:transfer_files/char_img/char_img.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
@@ -8,7 +7,7 @@ import 'package:permission_handler/permission_handler.dart';
 
 
 
-class Secondpage extends StatefulWidget {
+class Secondpage extends StatefulWidget{
   const Secondpage({super.key});
 
   @override
@@ -20,7 +19,6 @@ class _SecondpageState extends State<Secondpage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: Appbar(),
-      bottomNavigationBar: CustomBottomNavigation(sta: 0,),
       body: Column(
         children: [
           SizedBox(height: 150,),
