@@ -4,6 +4,7 @@ import 'package:transfer_files/camera_and_qr_code/qrCodeScanner.dart';
 // import 'package:transfer_files/char_img/char_img.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:transfer_files/f_picker/f_picker.dart';
 
 
 
@@ -52,23 +53,29 @@ class _SecondpageState extends State<Secondpage> {
                   ),
                 ),
               ),
-              Container(
-                height: 150,
-                width: 150,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [BoxShadow(
-                    color: Colors.black.withAlpha(100),
-                    blurRadius: 20,
-                  )],
-                  border: Border.all(
-                    color: Colors.black,
-                    width: 2,
-              )
-                ),
-                child: SvgPicture.asset('assets/icons/Upload.svg',
-                colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
+              GestureDetector(
+                onTap:() {
+                  f_picker().pick();
+                  
+                },
+                child: Container(
+                  height: 150,
+                  width: 150,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [BoxShadow(
+                      color: Colors.black.withAlpha(100),
+                      blurRadius: 20,
+                    )],
+                    border: Border.all(
+                      color: Colors.black,
+                      width: 2,
+                )
+                  ),
+                  child: SvgPicture.asset('assets/icons/Upload.svg',
+                  colorFilter: ColorFilter.mode(Colors.black, BlendMode.srcATop),
+                  ),
                 ),
               ),
             ],

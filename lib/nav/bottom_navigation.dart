@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:transfer_files/pages/secondpage.dart';
-import 'package:transfer_files/pages/Transfer.dart';
 import 'package:transfer_files/index_to_nav.dart';
 
 class CustomBottomNavigation extends StatefulWidget {
