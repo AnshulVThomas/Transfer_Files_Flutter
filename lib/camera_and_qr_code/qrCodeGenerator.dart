@@ -8,11 +8,11 @@ class QRCodeGenerator extends StatefulWidget {
 }
 
 class _QRCodeGeneratorState extends State<QRCodeGenerator> {
-  final String host = "your.sftp.server"; // Change to your SFTP server
+  final String host = "your.sftp.server";
   final int port = 22;
   final String username = "yourUsername";
   final String password = "yourPassword";
-  final String filePath = "/path/to/file.txt"; // Change to the file you want to transfer
+  final String filePath = "/path/to/file.txt";
 
   String qrData = "Generating QR...";
 
@@ -24,7 +24,6 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
 
   Future<void> generateSFTPQr() async {
     try {
-      // Connect to the SFTP server
       final client = SSHClient(
         await SSHSocket.connect(host, port),
         username: username,
