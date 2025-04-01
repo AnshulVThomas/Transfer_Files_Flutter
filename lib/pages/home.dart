@@ -81,10 +81,10 @@ bool red_textfield =   false;
     );
   }
 
-  void savedata(String user,String char_img_path_string)async{
+  void savedata(String user,String charImgPathString)async{
     SharedPreferences pref = await SharedPreferences.getInstance();
     await pref.setString("username", user);
-    await pref.setString("char_path", char_img_path_string);
+    await pref.setString("char_path", charImgPathString);
     print(pref.getString("username"));
 
   }

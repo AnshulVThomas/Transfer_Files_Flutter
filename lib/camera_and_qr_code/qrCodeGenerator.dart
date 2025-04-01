@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:dartssh2/dartssh2.dart';
+import 'package:transfer_files/camera_and_qr_code/qrCodeScanner.dart';
+import 'package:transfer_files/permission_handle/perm.dart';
 
 class QRCodeGenerator extends StatefulWidget {
+  const QRCodeGenerator({super.key});
+
   @override
   _QRCodeGeneratorState createState() => _QRCodeGeneratorState();
 }
@@ -24,22 +27,13 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
 
   Future<void> generateSFTPQr() async {
     try {
-      final client = SSHClient(
-        await SSHSocket.connect(host, port),
-        username: username,
-        onPasswordRequest: () => password,
-      );
+    
 
-      final sftp = await client.sftp();
-      final stat = await sftp.stat(filePath);
-
-      if (stat != null) {
-        setState(() {
-          qrData = "sftp://$username:$password@$host:$port$filePath";
-        });
-      }
-
-      client.close();
+      setState(() {
+        qrData = "sftp://$username:$password@$host:$port$filePath";
+      });
+    
+ 
     } catch (e) {
       setState(() {
         qrData = "Error: ${e.toString()}";
@@ -52,21 +46,81 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
     return Scaffold(
       appBar: AppBar(title: Text("QR Code for SFTP File")),
       body: Center(
-        child: qrData.startsWith("sftp://")
-            ? QrImageView(
-                data: qrData,
-                version: QrVersions.auto,
-                size: 250.0,
-              )
-            : Text(qrData, style: TextStyle(fontSize: 16, color: Colors.red)),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              height: 300,
+              width: 300,
+              decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20), // Add rounded edges
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withAlpha(100),
+                          blurRadius: 20,
+                        ),
+                      ],
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2,
+                      ),
+                    ),
+              child: Center(
+                child: qrData.startsWith("sftp://")
+                    ? QrImageView(
+                        data: qrData,
+                        version: QrVersions.auto,
+                        size: 250.0,
+                      )
+                    : Text(qrData, style: TextStyle(fontSize: 16, color: Colors.red)),
+              ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+           GestureDetector(
+                onTap:  () async{ 
+                 if(await requestCameraPermission()){
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>QRCodeScanner()));
+                  }
+                 },
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20), // Add rounded edges
+                  boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withAlpha(100),
+                    blurRadius: 20,
+                  ),
+                                ],
+                                border: Border.all(
+                  color: Colors.black,
+                  width: 2,
+                                ),
+                              ),
+                    child: Text("Scan Insted",
+                    style: TextStyle(
+                      fontSize:20,
+                      color: Colors.black,
+                    ),),
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }
 }
 
-void main() {
-  runApp(MaterialApp(home: QRCodeGenerator()));
-}
+
   
   // In the above code snippet, we have created a QR code generator that generates a QR code for an SFTP file. The QR code contains the SFTP URL with the username, password, host, port, and file path. 
   // The  generateSFTPQr  function connects to the SFTP server using the  SSHClient  class from the  dartssh2  package. It then checks if the file exists on the server and generates the SFTP URL for the file. 

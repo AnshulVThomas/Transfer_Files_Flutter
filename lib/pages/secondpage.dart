@@ -3,8 +3,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:transfer_files/camera_and_qr_code/qrCodeScanner.dart';
 // import 'package:transfer_files/char_img/char_img.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
-import 'package:permission_handler/permission_handler.dart';
+// import 'package:permission_handler/permission_handler.dart';
 import 'package:transfer_files/f_picker/f_picker.dart';
+import 'package:transfer_files/camera_and_qr_code/qrCodeGenerator.dart';
+
 
 
 
@@ -29,8 +31,8 @@ class _SecondpageState extends State<Secondpage> {
 
 
               GestureDetector(
-                onTap:() {
-                  requestCameraPermission();
+                onTap:() async{
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>QRCodeGenerator()));
                   
                 },
                 child: Container(
@@ -106,16 +108,16 @@ class _SecondpageState extends State<Secondpage> {
 
 }
 
-Future<void> requestCameraPermission() async {
-    var status = await Permission.camera.request();
-    if (status.isGranted) {
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>QRCodeScanner()));
-    } else if (status.isDenied) {
-      requestCameraPermission();
-    } else if (status.isPermanentlyDenied) {
-      openAppSettings(); // Opens the app-specific settings page
-    }
-  }
+// Future<void> requestCameraPermission() async {
+//     var status = await Permission.camera.request();
+//     if (status.isGranted) {
+//       Navigator.push(context, MaterialPageRoute(builder: (context)=>QRCodeScanner()));
+//     } else if (status.isDenied) {
+//       requestCameraPermission();
+//     } else if (status.isPermanentlyDenied) {
+//       openAppSettings(); // Opens the app-specific settings page
+//     }
+//   }
 
 
   AppBar Appbar() {
