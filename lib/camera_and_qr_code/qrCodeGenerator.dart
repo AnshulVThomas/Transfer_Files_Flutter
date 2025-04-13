@@ -83,7 +83,7 @@ class _QRCodeGeneratorState extends State<QRCodeGenerator> {
            GestureDetector(
                 onTap:  () async{ 
                  if(await requestCameraPermission()){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>QRCodeScanner()));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>QRCodeScanner()));
                   }
                  },
                 child: Padding(
