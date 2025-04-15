@@ -1,26 +1,34 @@
 class Active {
-  String iconpath;
-  String username;
+  String iconpath="assets/characters/magician.svg";
+  String username="";
+  String ip;
+  String port;
+  String mode;
   bool inTransfer=false;
-  String filename="dummy";
+  String filename="";
   int progress =0;
+  static List<Active> profile=[];
 
 
-Active({required this.iconpath,required this.username});
+Active({required this.ip,required this.port,required this.mode});
 static List<Active> getActive(){
-  List<Active> profile=[];
-  profile.add(
-    Active(iconpath: "assets/characters/magician.svg", username: "Dummy")
-  );
-   profile.add(
-    Active(iconpath: "assets/characters/wiz.svg", username: "Dummy2")
-  );
-profile.add(
-    Active(iconpath: "assets/characters/default.svg", username: "Default")
-  );
-  
+ 
+   if (profile.isEmpty) {
+    Active a=Active(ip: "demo", port: "demo", mode: "demo");
+    a.username="demo";
+
+    addActive(a);
+
+  }
 
 
   return profile;
+}
+
+static addActive(Active a){
+   
+ 
+  profile.add(a);
+  print("profile Added");
 }
 }

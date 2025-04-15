@@ -1,5 +1,9 @@
 package com.example.transfer_files;
 
+import java.util.HashMap;
+import java.util.Map;
+
+
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -30,32 +34,74 @@ public class MainActivity extends FlutterActivity {
 
         new MethodChannel(flutterEngine.getDartExecutor().getBinaryMessenger(), SERVER_CHANNEL)
                 .setMethodCallHandler((call, result) -> {
-                    if (call.method.equals("startServer")) {
-                        String ip = call.argument("ip");
-                        int port = call.argument("port");
+                   switch (call.method) {
+                case "startServer":
+                    String ip = call.argument("ip");
+                    int port = call.argument("port");
 
-                        // Ensure storage permission (for file saving)
-                        if (!checkPermissions()) {
-                            requestPermissions();
-                            result.error("PERMISSION_ERROR", "Storage permission required", null);
-                            return;
-                        }
-
-                        new Thread(() -> {
-                            try {
-                                Server.startServer(ip, port, logChannel, getApplicationContext());
-                                mainThreadHandler.post(() -> result.success("Server started"));
-                            } catch (Exception e) {
-                                mainThreadHandler.post(() -> result.error("SERVER_ERROR", "Failed to start server: " + e.getMessage(), null));
-                            }
-                        }).start();
-
-                    } else if (call.method.equals("stopServer")) {
-                        Server.stopServer();
-                        result.success("Server stopped");
-                    } else {
-                        result.notImplemented();
+                    if (!checkPermissions()) {
+                        requestPermissions();
+                        result.error("PERMISSION_ERROR", "Storage permission required", null);
+                        return;
                     }
+
+                    new Thread(() -> {
+                        try {
+                            Server.startServer(ip, port, logChannel, getApplicationContext());
+                            mainThreadHandler.post(() -> result.success("Server started"));
+                        } catch (Exception e) {
+                            mainThreadHandler.post(() ->
+                                result.error("SERVER_ERROR", "Failed to start server: " + e.getMessage(), null));
+                        }
+                    }).start();
+                    break;
+
+                case "startClient":
+                    String serverIp = call.argument("ip");
+                    int serverPort = call.argument("port");
+                    String mode = call.argument("mode");
+                    String filePath = call.argument("filePath");
+
+                    if (!checkPermissions()) {
+                        requestPermissions();
+                        result.error("PERMISSION_ERROR", "Storage permission required", null);
+                        return;
+                    }
+
+                    new Thread(() -> {
+                        try {
+                            Client.startClient(serverIp, serverPort, mode, filePath, logChannel);
+                            mainThreadHandler.post(() -> result.success("Client started"));
+                             mainThreadHandler.post(() -> {
+                        if (logChannel != null) {
+                            HashMap<String, Object> args = new HashMap<>();
+                            args.put("ip", "192.168.1.10");
+                            args.put("port", "8080");
+                            args.put("mode","client");
+                            logChannel.invokeMethod("setActive", args);
+            }
+        });
+                        } catch (Exception e) {
+                            mainThreadHandler.post(() ->
+                                result.error("CLIENT_ERROR", "Failed to start client: " + e.getMessage(), null));
+                        }
+                    }).start();
+                    
+                    break;
+
+                case "stopClient":
+                    Client.stopClient();
+                    result.success("Client stopped");
+                break;
+
+                case "stopServer":
+                    Server.stopServer();
+                    result.success("Server stopped");
+                    break;
+
+                default:
+                    result.notImplemented();
+            }
                 });
     }
 
