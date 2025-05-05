@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import "package:permission_handler/permission_handler.dart";
 import 'package:transfer_files/Connections/connections.dart';
 import 'package:transfer_files/Connections/cLogs.dart';
+import 'package:transfer_files/Connections/networkControl.dart';
 import 'package:transfer_files/f_picker/f_picker.dart';
 
 class TransferPage extends StatefulWidget {
@@ -49,7 +50,23 @@ Active ab = Active(
 }
 
       }else if(call.method == "log") {
-       
+        setState(() {
+
+ 
+
+          CLogs.logs.add(call.arguments);
+ 
+
+           if (CLogs.logs.length > 10) { // Keep only the last 100 logs
+ 
+
+            CLogs.logs.removeAt(0);
+ 
+
+          }
+ 
+
+        });
       }
     });
   }
@@ -88,27 +105,25 @@ Future<void> requestStoragePermission() async {
   }
 
   Future<void> startServer() async {
-    if (selectedIP == null) return;
-    try {
+    if (await startServerRl(serverChannel, selectedIP, port)) {
+    
        
-       if (await Permission.manageExternalStorage.request().isGranted) {
+      
     // Permission granted, start the server
 
  
       await serverChannel.invokeMethod('startServer', {'ip': selectedIP, 'port': port});
       setState(() {
         isServerRunning = true;
-        CLogs.logs.add("Server started on $selectedIP:$port");
+       
       });
        }
        else {
-    CLogs.logs.add("Permission denied! Go to Settings > Apps > Your App > Permissions and enable 'Manage All Files'.");
+   setState(() {
+     isServerRunning = false;
+   });
   }
-    } catch (e) {
-      setState(() {
-        CLogs.logs.add("Error: $e");
-      });
-    }
+    
   }
    Future<void> startClient() async {
     if (selectedIP == null) return;
@@ -120,7 +135,7 @@ Future<void> requestStoragePermission() async {
        if(files.isNotEmpty){
  
       await serverChannel.invokeMethod('startClient', {
-        'ip': "192.168.80.179",
+        'ip': "192.168.80.114",
          'port': port, 
          "mode": "UPLOAD", 
          "filePath": files[0],
