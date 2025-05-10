@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
-
+import 'package:transfer_files/camera_and_qr_code/qrCodeGenerator.dart';
 
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({super.key});
@@ -73,6 +73,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
+                onTap: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>QRCodeGenerator())),
                 child: Padding(
                   padding: const EdgeInsets.all(12.0),
                   child: Container(
